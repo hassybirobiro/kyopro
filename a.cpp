@@ -1,10 +1,15 @@
 #include <bits/stdc++.h>
 #include <sys/time.h>
-#include <atcoder/all>
 
 using namespace std;
-using namespace atcoder;
 
+#ifdef ATCODER
+#include <atcoder/all>
+using namespace atcoder;
+template <int m>
+ostream &operator<<(ostream &os, const atcoder::static_modint<m> &a) { os << a.val(); return os; }
+#else
+#endif
 using ll = long long;
 using ull = unsigned long long;
 using ld = long double;
@@ -84,46 +89,34 @@ template <typename T>
 ostream &operator<<(ostream &os, stack<T> st) { while (st.size()){ os << st.top() << " "; st.pop();} return os;}
 template <class T, class Container, class Compare>
 ostream &operator<<(ostream &os, priority_queue<T, Container, Compare> pq) { while (pq.size()) {os << pq.top() << " ";pq.pop();}return os;}
+namespace debug {
+    void dump_init(const source_location location = std::source_location::current()) {
+        cerr << "\033[32m[dump] \033[m\033[36m" << location.file_name() << ":" << location.line() << ":" << location.function_name() << "\033[m ";
+    }
+    template <typename T>
+    void dump(const T a, const string label = "", const source_location location = source_location::current()) {
+            dump_init(location);
+            if (label == "") {
+                cerr << a << endl;
+                return;
+            }
+        cerr << label << " : " << a << endl;
+    }
+}
+#ifdef __LOCAL
+#define debug(...) debug::dump(__VA_ARGS__, #__VA_ARGS__)
+#else
+#define debug(...) void(0);
+#endif
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 
 void Main () {
-    ll N, L;
-    cin >> N >> L;
+    ll N;
+    cin >> N;
     vll A(N);
     cin >> A;
-    ll ans = INF_LL;
+    sort(ALL(A));
     rep(i, N) {
-        ll a = A[0], b = A[N - 1], t = 0;
-        t += max(a * 2 + A[i] - a, 2 * (L - b) + b - A[i]);
-        a = A[i];
-        b = A[i];
-        ll next = L - a;
-        auto iter = lower_bound(ALL(A), next);
-        ll a_ = INF_LL, b_ = -INF_LL;
-        if (iter != A.end()) {
-            b_ = *iter;
-        }
-        if (iter != A.begin()) {
-            iter--;
-            a_ = *iter;
-        }
-        ll t_ = INF_LL;
-        if (a_ != -INF_LL) {
-            if (chmin(t_, max(L - next + L - a_, next + a_))) {
-                next = a_;
-            }
-        }
-        if (b_ != INF_LL) {
-            if (chmin(t_, max(L - next + L - b_, next + b_))) {
-                next = b_;
-            }
-        }
-        t += t_;
-        t += max(next + A[0], L - next + L - A[N - 1]);
-        cout << i << " " << t << endl;
-        chmin(ans, t);
+        cout << max(abs(A[N - 1] - A[i]), abs(A[i] - A[0])) << endl;
     }
-    const std::source_location location = std::source_location::current();
-    std::cout << location.line() << std::endl;
-    cout << ans << endl;
 }

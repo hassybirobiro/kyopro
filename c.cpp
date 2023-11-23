@@ -1,10 +1,15 @@
 #include <bits/stdc++.h>
 #include <sys/time.h>
-#include <atcoder/all>
 
 using namespace std;
-using namespace atcoder;
 
+#ifdef ATCODER
+#include <atcoder/all>
+using namespace atcoder;
+template <int m>
+ostream &operator<<(ostream &os, const atcoder::static_modint<m> &a) { os << a.val(); return os; }
+#else
+#endif
 using ll = long long;
 using ull = unsigned long long;
 using ld = long double;
@@ -84,6 +89,25 @@ template <typename T>
 ostream &operator<<(ostream &os, stack<T> st) { while (st.size()){ os << st.top() << " "; st.pop();} return os;}
 template <class T, class Container, class Compare>
 ostream &operator<<(ostream &os, priority_queue<T, Container, Compare> pq) { while (pq.size()) {os << pq.top() << " ";pq.pop();}return os;}
+namespace debug {
+    void dump_init(const source_location location = std::source_location::current()) {
+        cerr << "\033[32m[dump] \033[m\033[36m" << location.file_name() << ":" << location.line() << ":" << location.function_name() << "\033[m ";
+    }
+    template <typename T>
+    void dump(const T a, const string label = "", const source_location location = source_location::current()) {
+            dump_init(location);
+            if (label == "") {
+                cerr << a << endl;
+                return;
+            }
+        cerr << label << " : " << a << endl;
+    }
+}
+#ifdef __LOCAL
+#define debug(...) debug::dump(__VA_ARGS__, #__VA_ARGS__)
+#else
+#define debug(...) void(0);
+#endif
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 
 void Main () {}
